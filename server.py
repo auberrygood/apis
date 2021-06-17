@@ -46,7 +46,7 @@ def find_afterparties():
                 'postalCode': postalcode,
                 'radius': radius,
                 'unit': unit,
-                'sort': sort}
+                'sort': sort} #sorting by distance does not work in form, results in keyerror ('_embedded')
 
     # TODO: Make a request to the Event Search endpoint to search for events
    
