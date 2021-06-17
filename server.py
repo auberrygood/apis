@@ -35,7 +35,7 @@ def find_afterparties():
     """Search for afterparties on Eventbrite"""
 
     keyword = request.args.get('keyword', '')
-    postalcode = request.args.get('zipcode', '')
+    postalCode = request.args.get('zipcode', '')
     radius = request.args.get('radius', '')
     unit = request.args.get('unit', '')
     sort = request.args.get('sort', '')
@@ -43,7 +43,7 @@ def find_afterparties():
     url = 'https://app.ticketmaster.com/discovery/v2/events'
     payload = {'apikey': API_KEY,
                 'keyword': keyword,
-                'postalCode': postalcode,
+                'postalCode': postalCode,
                 'radius': radius,
                 'unit': unit,
                 'sort': sort} #sorting by distance does not work in form, results in keyerror ('_embedded')
@@ -82,7 +82,20 @@ def get_event_details(id):
 
     # TODO: Finish implementing this view function
 
-    return render_template('event-details.html')
+    url = f'https://app.ticketmaster.com/discovery/v2/events/{id}' #implement f string to register {id} as variable
+    payload = {'apikey': API_KEY}
+
+    res = requests.get(url, params=payload)
+
+    event = res.json()
+    venues = event['_embedded']['venues']
+    classifications = event['classifications']
+    
+
+    return render_template('event-details.html',
+                            event=event,
+                            venues=venues,
+                            classifications=classifications)
 
 
 if __name__ == '__main__':
